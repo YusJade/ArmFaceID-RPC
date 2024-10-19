@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package arm_face_id;
+
+message RecognizationRequest {}
+
+message RecognizationResponse {}
+
+message User {
+  int64 user_id = 1;
+  string nick_name = 2;
+  string email = 3;
+  bytes profile_picture = 4;
+  bytes face_image = 5;
+  // ISO 8601 日期时间格式 YYYY-MM-DDTHH:MM:SS
+  string last_recognized_iso_datetime = 6;
+}
+
+service FaceRpc {
+  rpc RpcRecognizeFace(RecognizationRequest) returns (RecognizationResponse) {}
+}
