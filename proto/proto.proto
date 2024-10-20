@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package arm_face_id;
 
-message RecognizationRequest {}
+message RecognitionRequest {}
 
-message RecognizationResponse {}
+message RecognitionResponse {}
 
 message User {
   int64 user_id = 1;
@@ -17,5 +17,5 @@ message User {
 }
 
 service FaceRpc {
-  rpc RpcRecognizeFace(RecognizationRequest) returns (RecognizationResponse) {}
+  rpc RpcRecognizeFace(RecognitionRequest) returns (RecognitionResponse) {}
 }
