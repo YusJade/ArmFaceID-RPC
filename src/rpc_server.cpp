@@ -1,4 +1,7 @@
 #include "rpc_server.h"
+#include <absl/time/civil_time.h>
+#include <absl/time/clock.h>
+#include <absl/time/time.h>
 #include <grpcpp/support/status.h>
 #include <spdlog/spdlog.h>
 
@@ -41,9 +44,11 @@ void RpcServer::CallData::Proceed() {
                                       this);
   } else if (status_ == PROCESS) {
     new CallData(service_, cq_);
-
+    absl::CivilSecond civil_second =
+        absl::ToCivilSecond(absl::Now(), absl::LocalTimeZone());
+    std::string formated_str = absl::FormatCivilTime(civil_second);
     // 处理业务逻辑
-    spdlog::info("RPC 服务端：处理一条请求。");
+    spdlog::info("RPC 服务端：处理一条请求。{}", formated_str);
 
     status_ = FINISH;
     responder_.Finish(reply_, grpc::Status::OK, this);
