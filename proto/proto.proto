@@ -2,18 +2,22 @@ syntax = "proto3";
 
 package arm_face_id;
 
-message RecognitionRequest {}
+message RecognitionRequest {
+  bytes image = 1;
+}
 
-message RecognitionResponse {}
+message RecognitionResponse {
+  User res = 1;
+}
 
 message User {
   int64 user_id = 1;
-  string nick_name = 2;
+  string user_name = 2;
   string email = 3;
   bytes profile_picture = 4;
   bytes face_image = 5;
   // ISO 8601 日期时间格式 YYYY-MM-DDTHH:MM:SS
-  string last_recognized_iso_datetime = 6;
+  string last_recognized_datetime = 6;
 }
 
 service FaceRpc {

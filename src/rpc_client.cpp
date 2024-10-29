@@ -1,11 +1,13 @@
 #include "rpc_client.h"
-#include "proto.grpc.pb.h"
-#include "proto.pb.h"
 
 #include <cassert>
+
 #include <grpcpp/client_context.h>
 #include <grpcpp/impl/channel_interface.h>
 #include <spdlog/spdlog.h>
+
+#include "proto.grpc.pb.h"
+#include "proto.pb.h"
 
 using namespace arm_face_id;
 
@@ -23,16 +25,21 @@ void RpcClient::ProcessAsyncReply() {
 
     if (ok) {
       spdlog::info("RPC 客户端：成功接收到服务端的响应 :P");
+      auto res = call->reply.res();
+      if (res.user_id() > -1) {
+        spdlog::info("RPC 客户端：识别结果 id={} username={} :P", res.user_id(),
+                     res.user_name());
+      }
     } else {
       spdlog::warn("RPC 客户端：服务端无响应! :O");
     }
   }
 }
 
-void RpcClient::RecognizeFace() {
+void RpcClient::RecognizeFace(std::string img_bytes) {
   // RPC请求数据封装
   RecognitionRequest request;
-  // request.
+  request.set_image(img_bytes);
 
   // 异步客户端请求，存储请求响应的状态和数据的结构体等，在下方进行的定义
   AsyncClientCall *call = new AsyncClientCall;
