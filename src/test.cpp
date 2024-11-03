@@ -1,23 +1,22 @@
-#include "rpc_client.h"
-#include "rpc_server.h"
+#include <chrono>
+#include <string>
+#include <thread>
 
 #include <absl/flags/flag.h>
 #include <absl/flags/parse.h>
 #include <absl/flags/usage.h>
-
-#include <chrono>
 #include <grpc++/channel.h>
 #include <grpc++/grpc++.h>
 #include <grpcpp/create_channel.h>
 #include <grpcpp/security/credentials.h>
 #include <spdlog/spdlog.h>
-#include <string>
-#include <thread>
+
+#include "rpc_client.h"
+#include "rpc_server.h"
 
 ABSL_FLAG(std::string, server_addr, "localhost:8081", "服务器地址");
 
 int main(int argc, char **argv) {
-
   std::string server_addr = absl::GetFlag(FLAGS_server_addr);
   arm_face_id::RpcClient rpc_client(
       grpc::CreateChannel(server_addr, grpc::InsecureChannelCredentials()));
@@ -33,7 +32,7 @@ int main(int argc, char **argv) {
 
   for (int i = 0; i < 10; i++) {
     spdlog::info("客户端发送一条请求");
-    rpc_client.RecognizeFace();
+    // rpc_client.RecognizeFace();
     std::this_thread::sleep_for(std::chrono::seconds(3));
   }
 

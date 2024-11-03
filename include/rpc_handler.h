@@ -7,6 +7,20 @@
 
 namespace arm_face_id {
 
+/**
+ * @brief 由模板类 RpcHandler
+ * 调用，表明自己已做好处理目标请求的准备，等待请求的到来
+ *
+ * @tparam Req 目标的请求消息类型
+ * @tparam Resp 返回的响应消息类型
+ * @param service
+ * @param ctx
+ * @param req
+ * @param resp
+ * @param new_call_cq
+ * @param notification_cq
+ * @param tag
+ */
 template <typename Req, typename Resp>
 void RequestRpc(FaceRpc::AsyncService* service, grpc::ServerContext* ctx,
                 Req& req, grpc::ServerAsyncResponseWriter<Resp>& resp,
@@ -26,7 +40,7 @@ inline void RequestRpc(
 
 class RPCHandlerBase {
  public:
-  virtual void Proceed() = 0;
+  virtual void Proceed() {};
 };
 
 template <typename Req, typename Resp>

@@ -1,6 +1,6 @@
 project(proto)
 
-set(PROTO_FILES proto.proto)
+set(PROTO_FILES face.proto)
 
 add_library(proto ${PROTO_FILES})
 target_link_libraries(proto
