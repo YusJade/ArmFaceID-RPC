@@ -13,8 +13,8 @@
 
 #include "rpc_handler.h"
 
-#include "proto.grpc.pb.h"
-#include "proto.pb.h"
+#include "face.grpc.pb.h"
+
 namespace arm_face_id {
 class RpcServer {
  public:

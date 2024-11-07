@@ -4,11 +4,11 @@ package arm_face_id;
 
 
 message RegistrationRequest {
-  User info = 1;
+  UserInfo info = 1;
 }
 
 message RegistrationResponse {
-  User res = 1;
+  UserInfo res = 1;
 }
 
 message RecognitionRequest {
@@ -16,10 +16,10 @@ message RecognitionRequest {
 }
 
 message RecognitionResponse {
-  User res = 1;
+  UserInfo res = 1;
 }
 
-message User {
+message UserInfo {
   int64 user_id = 1;
   string user_name = 2;
   string email = 3;

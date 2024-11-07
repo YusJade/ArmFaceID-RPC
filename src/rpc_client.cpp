@@ -6,8 +6,8 @@
 #include <grpcpp/impl/channel_interface.h>
 #include <spdlog/spdlog.h>
 
-#include "proto.grpc.pb.h"
-#include "proto.pb.h"
+#include "face.grpc.pb.h"
+#include "face.pb.h"
 
 using namespace arm_face_id;
 

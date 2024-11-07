@@ -8,8 +8,8 @@
 #include <grpcpp/support/async_unary_call.h>
 #include <grpcpp/support/status.h>
 
-#include "proto.grpc.pb.h"
-#include "proto.pb.h"
+#include "face.grpc.pb.h"
+#include "face.pb.h"
 
 namespace arm_face_id {
 class RpcClient {

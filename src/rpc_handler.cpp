@@ -3,7 +3,7 @@
 using namespace arm_face_id;
 
 /**
- * @brief 特化模板函数，
+ * @brief 特化模板函数，注册处理 RecognitionRequest 的 Handler
  *
  * @param service
  * @param ctx
