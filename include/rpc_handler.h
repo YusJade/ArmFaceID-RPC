@@ -4,6 +4,7 @@
 #include <grpcpp/support/status.h>
 
 #include "face.grpc.pb.h"
+#include "face.pb.h"
 
 namespace arm_face_id {
 
@@ -36,6 +37,17 @@ inline void RequestRpc(
     ::grpc::ServerCompletionQueue* notification_cq, void* tag) {
   service->RequestRpcRecognizeFace(ctx, &req, &resp, new_call_cq,
                                    notification_cq, tag);
+}
+
+template <>
+inline void RequestRpc(
+    FaceRpc::AsyncService* service, grpc::ServerContext* ctx,
+    RegistrationRequest& req,
+    grpc::ServerAsyncResponseWriter<RegistrationResponse>& resp,
+    ::grpc::CompletionQueue* new_call_cq,
+    ::grpc::ServerCompletionQueue* notification_cq, void* tag) {
+  service->RequestRpcRegisterFace(ctx, &req, &resp, new_call_cq,
+                                  notification_cq, tag);
 }
 
 class RPCHandlerBase {
