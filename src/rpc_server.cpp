@@ -15,20 +15,24 @@ RpcServer::RpcServer(std::string server_addr) {
   cq_ = builder.AddCompletionQueue();
   server_ = builder.BuildAndStart();
 
-  spdlog::info("RPC 服务端：监听于: {} 。", server_addr);
+  SPDLOG_INFO("gRPC service is listening on {}", server_addr);
 }
 
 void RpcServer::Run() {
-  spdlog::info("RPC 服务端：等待请求中。");
+  SPDLOG_INFO("gRPC service is waitting for request...");
   // new CallData(&service_, cq_.get());
   void *tag;
   bool ok;
   while (true) {
     cq_->Next(&tag, &ok);
+
     if (!ok) continue;
+
     static_cast<RPCHandlerBase *>(tag)->Proceed();
   }
-  spdlog::info("RPC 服务端：退出进程。");
+  SPDLOG_WARN("gRPC service is closed!");
+  cq_->Shutdown();
+  server_->Shutdown();
 }
 
 // RpcServer::CallData::CallData(FaceRpc::AsyncService *service,

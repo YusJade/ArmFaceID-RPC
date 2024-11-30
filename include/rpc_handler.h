@@ -2,6 +2,7 @@
 
 #include <grpcpp/support/async_unary_call.h>
 #include <grpcpp/support/status.h>
+#include <spdlog/spdlog.h>
 
 #include "face.grpc.pb.h"
 #include "face.pb.h"
@@ -52,7 +53,7 @@ inline void RequestRpc(
 
 class RPCHandlerBase {
  public:
-  virtual void Proceed() {};
+  virtual void Proceed(){};
 };
 
 template <typename Req, typename Resp>
@@ -80,14 +81,19 @@ class RPCHandler : public RPCHandlerBase {
       RequestRpc(service_, &ctx_, request_, responder_, cq_, cq_, this);
     } else if (status_ == PROCESS) {
       new RPCHandler(service_, cq_, on_process_func_);
-      // absl::CivilSecond civil_second =
-      //     absl::ToCivilSecond(absl::Now(), absl::LocalTimeZone());
-      // std::string formatted_str = absl::FormatCivilTime(civil_second);
-      // // 处理业务逻辑
-      // spdlog::info("RPC 服务端：处理一条请求。{}", formatted_str);
+
+      auto resp_begin_time_point = std::chrono::high_resolution_clock::now();
+      SPDLOG_INFO("Recieved a grpc request<{}>.", typeid(Req).name());
+
       auto grpc_status = on_process_func_(request_, reply_);
       status_ = FINISH;
       responder_.Finish(reply_, grpc_status, this);
+
+      auto resp_finish_time_point = std::chrono::high_resolution_clock::now();
+      std::chrono::duration<double> took_time =
+          resp_finish_time_point - resp_begin_time_point;
+      SPDLOG_INFO("Produced a grpc response<{}>, cost {}s", typeid(Resp).name(),
+                  took_time.count());
     } else {
       delete this;
     }
