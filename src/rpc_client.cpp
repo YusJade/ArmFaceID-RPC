@@ -23,15 +23,14 @@ void RpcClient::ProcessAsyncReply() {
   while (cq_.Next(&got_tag, &ok)) {
     AsyncClientCall *call = static_cast<AsyncClientCall *>(got_tag);
 
-    if (ok) {
+    assert(ok);
+
+    if (call->status.ok()) {
       spdlog::info("RPC 客户端：成功接收到服务端的响应 :P");
       auto res = call->reply.res();
-      if (res.user_id() > -1) {
-        spdlog::info("RPC 客户端：识别结果 id={} username={} :P", res.user_id(),
-                     res.user_name());
-      }
+      Notify(res);
     } else {
-      spdlog::warn("RPC 客户端：服务端无响应! :O");
+      spdlog::warn("RPC 客户端：响应错误!: {}", call->status.error_message());
     }
   }
 }

@@ -8,11 +8,13 @@
 #include <grpcpp/support/async_unary_call.h>
 #include <grpcpp/support/status.h>
 
+#include "observer/core.h"
+
 #include "face.grpc.pb.h"
 #include "face.pb.h"
 
 namespace arm_face_id {
-class RpcClient {
+class RpcClient : public treasure_chest::pattern::Subject {
  public:
   explicit RpcClient(std::shared_ptr<grpc::ChannelInterface> channel);
 
